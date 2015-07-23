@@ -1,0 +1,110 @@
+/**
+ * Slate Grey     - #858C92
+ * Brown Grey     - #A6896F
+ * Accent Yellow  - #F2BE22
+ * Violet         - #C394F2
+ * Green          - #7D8C45
+ */
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+
+.seat-picker {
+  margin: auto;
+}
+
+/**
+ * Main Layout
+ */
+
+
+#sidebar {
+  position:fixed;
+  top:0;
+  bottom:0;
+  right:0;
+  width:25%;
+}
+
+.seat-picker main {
+  width:75%;
+  margin:0 25% 0 0;
+  padding-left: 5%;
+}
+
+/**
+ * Seat Picker
+ */
+.travel-class {
+  background-color: #A6896F;
+  display:block;
+  margin-bottom: 20px;
+}
+
+#seat-select li {
+  display:block;
+  width:100px;
+  float:left;
+  height:100px;
+  margin:10px;
+}
+#seat-select .seat {
+  border-radius:10px;
+  text-align:center;
+}
+
+#seat-select .aisle {
+  background-color:none;
+}
+
+#seat-select .row-letter {
+  float:right;
+  margin-right: -25px;
+}
+
+
+/**
+ * Legend
+ */
+ .legend {
+   width:100%;
+ }
+
+.legend li {
+  float:left;
+}
+
+.legend span.seat {
+  display:block;
+  width:100px;
+  height:100px;
+  border-radius:10px;
+  /*float:left;*/
+}
+
+.seat-map .single {
+  background-color: blue;
+}
+.seat {
+  background-color:#F2BE22;
+}
+.selected {
+  background-color:#7D8C45;
+}
+.occupied {
+  background-color:#C394F2;
+}
+
+.legend ul {
+  list-style: none;
+}
+
+
+#sidebar aside {
+  display:none;
+  clear:left;
+  width: 100%;
+}
