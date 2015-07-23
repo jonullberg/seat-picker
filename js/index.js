@@ -1,8 +1,15 @@
 'use strict';
 
 $(document).ready(function() {
-  // $('#seat-info').hide();
   var selectedPlane;
+
+  var flights = [];
+  this.addFlight = function(flightObj) {
+    if (!flightObj) {
+      new Error("Error adding flight to list");
+    }
+    flights.push(flightObj);
+  };
   var occupied = {
     'A':['2'],
     'C':['3'],
