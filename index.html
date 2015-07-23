@@ -1,6 +1,7 @@
 <html>
   <head>
     <title>Seat Picker</title>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="css/seat-picker.css">
   </head>
   <body>
@@ -20,15 +21,27 @@
           </ul>
         </div>
         <aside id="seat-info">
-          <h3>Seat Information</h3>
-          <label for="seat">Seat: </label>
-          <p id="seat"></p>
-          <label for="price">Price: </label>
-          <p id="price"></p>
-          <label for="class">Travel Class: </label>
-          <p id="class"></p>
-          <label for="availability">Availability: </label>
-          <p id="availability"></p>
+          <table>
+            <caption>Your Seat Information</caption>
+            <tbody>
+              <tr>
+                <td>Seat Number: </td>
+                <td id="seat"></td>
+              </tr>
+              <tr>
+                <td>Price: </td>
+                <td id="price"></td>
+              </tr>
+              <tr>
+                <td>Travel Class: </td>
+                <td id="class"></td>
+              </tr>
+              <tr>
+                <td>Availability: </td>
+                <td id="availability"></td>
+              </tr>
+            </tbody>
+          </table>
         </aside>
       </div>
 

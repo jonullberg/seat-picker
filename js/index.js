@@ -1,20 +1,21 @@
 'use strict';
 
 $(document).ready(function() {
-  // $('#seat-info').hide();
-  var selectedPlane;
+  var selectedFlight;
   var occupied = {
     'A':['2'],
     'C':['3'],
     'J':['5', '7'],
     'K':['1', '2', '4']
   };
-  var planes = [
+  var flights = [
     {
-      name: 'cessna',
+      flightNo: 'CS100',
+      planeType: 'cessna',
       travelClasses: [
       {
         name: 'single',
+        price: 400,
         rows: 2,
         seats: 2,
         aisles: 1,
@@ -22,7 +23,8 @@ $(document).ready(function() {
       }]
     },
     {
-      name: '747',
+      flightNo: 'OA815',
+      planeType: '747',
       travelClasses: [
       {
         name: 'First Class',
@@ -55,10 +57,10 @@ $(document).ready(function() {
    * On document load it will create a drop down with all plane types available as options
    * @param  {array} planes An array holding plane options
    */
-  var selectPopulator = function(planes) {
-    var select = '<select class="plane-select"><option disabled="disabled" selected="true" value="">Select a Plane</option>';
-    planes.forEach(function(plane) {
-      select += '<option value="' + plane.name + '">' + plane.name + '</option>';
+  var selectPopulator = function(flights) {
+    var select = '<select class="plane-select"><option disabled="disabled" selected="true" value="">Select a Flight</option>';
+    flights.forEach(function(flight) {
+      select += '<option value="' + flight.flightNo + '">' + flight.flightNo + ' - ' + flight.planeType + '</option>';
     });
     select += '</select>';
     $('#plane-select-wrapper').html(select);
@@ -68,25 +70,25 @@ $(document).ready(function() {
    * Will take all of classes of the plane and produce HTML markup
    * @param  {obj} plane The plane object to create markup for
    */
-  var travelClassesHTML = function(plane) {
+  var travelClassesHTML = function(flight) {
     var string = '';
     var rowLetter = 'A';
 
-    for(var i = 0; i < plane.travelClasses.length; i++) {
+    /**
+     * Will increment the character for row delegation
+     * @param  {string} c The string character to increment
+     */
+    function nextChar(c) {
+      return String.fromCharCode(c.charCodeAt(0) + 1);
+    }
 
-      var travelClass = plane.travelClasses[i];
+    for(var i = 0; i < flight.travelClasses.length; i++) {
+
+      var travelClass = flight.travelClasses[i];
 
       var width = travelClass.map.length;
 
       var height = travelClass.rows;
-
-      /**
-       * Will increment the character for row delegation
-       * @param  {string} c The string character to increment
-       */
-      function nextChar(c) {
-        return String.fromCharCode(c.charCodeAt(0) + 1);
-      }
 
       string += '<h3 class="travel-class-heading">' + travelClass.name + '</h3><div class="travel-class" style="width:' + (width*120) + 'px; height: ' + (height*120) + 'px">';
 
@@ -111,17 +113,17 @@ $(document).ready(function() {
 
             // Checks if seats are occupied
             if (occupied[rowLetter] && occupied[rowLetter].indexOf(seatNumber.toString()) > -1) {
-              string += ' occupied" data-availability="occupied';
+              string += ' occupied" data-availability="not available';
             } else {
-              string += '" data-availability="available'
+              string += '" data-availability="available';
             }
 
-            string += '" data-price="' + travelClass.price + '" data-seat="' + seatNumber + '" data-class="' + travelClass.name + '"><span class="price"></span></li>';
+            string += '" data-price="' + travelClass.price + '" data-seat="' + seatNumber + '" data-class="' + travelClass.name + '"><span class="price">$' + travelClass.price +'</span></li>';
 
             // Increments seat number for next seat
             seatNumber++;
           } else {
-            string += '<li class="aisle"></li>'
+            string += '<li class="aisle"></li>';
           }
         }
 
@@ -143,19 +145,24 @@ $(document).ready(function() {
 
   $('#seat-select').on({
     mouseenter: function(e) {
-      var price = $(this).attr('data-price');
-      $(this).children().html(price);
+      $(this).children().show();
     },
     mouseleave: function(e) {
-      $(e.target).children().html('');
+      $(this).children().hide('');
     },
-    click: function(e) {
+    click: function() {
+      var availability = $(this).attr('data-availability');
       $('#seat-select .selected').removeClass('selected');
       $(this).addClass('selected');
       $('#seat-info #price').html('$' + $(this).attr('data-price'));
       $('#seat-info #class').html($(this).attr('data-class'));
-      $('#seat-info #availability').html($(this).attr('data-availability'));
+      $('#seat-info #availability').html(availability);
       $('#seat-info #seat').html($(this).parent().attr('data-row') + $(this).attr('data-seat'));
+      if (availability === 'not available') {
+        $('#seat-info #availability').addClass('not-available');
+      } else {
+        $('#seat-info #availability').removeClass('not-available');
+      }
       $('#seat-info:hidden').show();
     }
   }, '.seat');
@@ -163,16 +170,16 @@ $(document).ready(function() {
   $(document).on({
     change: function() {
       var value = $(this).val();
-      selectedPlane = planes.filter(function(plane) {
-        if (plane.name === value) {
-          return plane;
+      selectedFlight = flights.filter(function(flight) {
+        if (flight.flightNo === value) {
+          return flight;
 
         }
       })[0];
-      travelClassesHTML(selectedPlane);
+      travelClassesHTML(selectedFlight);
 
     }
   }, '#plane-select-wrapper .plane-select');
 
-  selectPopulator(planes);
+  selectPopulator(flights);
 });
